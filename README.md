@@ -1,2 +1,4 @@
-# BASES.js
-Base encoding/decoding algorithm, with the ability for custom character sets of choice
+# How to use:
+
+* Install [Node.js](https://nodejs.org/en/download).
+* Run `require("./BASES.js")(<input>,<charset>,<'EncodeString'|'DecodeString'|'EncodeBinary'|'DecodeBinary'>)`.
