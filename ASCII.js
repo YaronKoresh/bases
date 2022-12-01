@@ -6,7 +6,7 @@ module.exports.DECODE = function(str){
 	return byteArray
 }
 
-module.exports.ENCODE = function(str){
+module.exports.ENCODE = function(buf){
 	var ret = '';
 	for (var i = 0; i < buf.length; i++) {
 		ret += String.fromCharCode(buf[i] & 127)

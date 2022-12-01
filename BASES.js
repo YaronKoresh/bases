@@ -70,14 +70,18 @@ module.exports = function (inp, charset, mode) {
 				bin += ZEROS(dec.toString(2), bits)
 			}
 			bin_array = SPLIT(bin, 8);
-			if (bin_array[bin_array.length - 1].length < 8) {
-				bin_array.pop()
+			try{
+				if (bin_array[bin_array.length - 1].length < 8) {
+					bin_array.pop()
+				}
+				for (var j = 0; j < bin_array.length; j++) {
+					bin_array[j] = parseInt(bin_array[j], 2)
+				}
+				result += ASCII_ENCODE(bin_array);
+				out.push(result);
+			} catch(e) {
+				out.push("");
 			}
-			for (var j = 0; j < bin_array.length; j++) {
-				bin_array[j] = parseInt(bin_array[j], 2)
-			}
-			result += ASCII_ENCODE(bin_array);
-			out.push(result)
 		}
 	} else if (mode == 'EncodeBinary') {
 		for (var i = 0; i < inp.length; i++) {
@@ -112,11 +116,18 @@ module.exports = function (inp, charset, mode) {
 				bin += ZEROS(dec.toString(2), bits)
 			}
 			bin_array = SPLIT(bin, 8);
-			if (bin_array[bin_array.length - 1].length < 8) {
-				bin_array.pop()
+			try{
+				if (bin_array[bin_array.length - 1].length < 8) {
+					bin_array.pop()
+				}
+				for (var j = 0; j < bin_array.length; j++) {
+					bin_array[j] = parseInt(bin_array[j], 2)
+				}
+				result += ASCII_ENCODE(bin_array);
+				out.push(result);
+			} catch(e) {
+				out.push("");
 			}
-			result += bin_array.join('');
-			out.push(result)
 		}
 	}
 	if (out.length == 1) {
