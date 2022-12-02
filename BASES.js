@@ -4,8 +4,17 @@ const ASCII_DECODE = ASCII.DECODE;
 const ZEROS = require("./ZEROS.js");
 const SPLIT = require("./SPLIT.js");
 
-module.exports = function (inp, charset, mode) {
-	var paddingChar = '=';
+module.exports = function (...$) {
+
+	var inp = $[0];
+	var charset = $[1];
+	var mode = $[2];
+	var paddingChar = $[3];
+
+	if(typeof paddingChar == "undefined"){
+		paddingChar = '=';
+	}
+
 	if (mode == 1) {
 		mode = 'EncodeString'
 	} else if (mode == 0) {
@@ -15,24 +24,31 @@ module.exports = function (inp, charset, mode) {
 	} else if (mode == 10) {
 		mode = 'DecodeBinary'
 	}
+
 	if (typeof inp != 'object') {
 		inp = [inp]
 	}
+
 	if (typeof charset != 'object') {
 		charset = charset.toString().split('')
 	}
+
 	var out = [];
 	var bs = charset.length;
+
 	if (bs < 2) {
 		return ''
 	}
+
 	var bits = Math.floor(Math.log2(bs));
 	var size = null;
 	var multi = 8;
+
 	while (multi % bits != 0) {
 		multi += 8;
 		size = multi / bits
 	}
+
 	if (mode == 'EncodeString') {
 		for (var i = 0; i < inp.length; i++) {
 			var result = '';
@@ -80,6 +96,7 @@ module.exports = function (inp, charset, mode) {
 				result += ASCII_ENCODE(bin_array);
 				out.push(result);
 			} catch(e) {
+				console.log("Error!");
 				out.push("");
 			}
 		}
@@ -126,6 +143,7 @@ module.exports = function (inp, charset, mode) {
 				result += ASCII_ENCODE(bin_array);
 				out.push(result);
 			} catch(e) {
+				console.log("Error!");
 				out.push("");
 			}
 		}
