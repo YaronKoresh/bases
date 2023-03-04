@@ -1,0 +1,15 @@
+{
+  "name": "BASES.js",
+  "version": "1.0.0",
+  "description": "Algorithm measuring percentages of correspondence between texts",
+  "author": "Yaron Koresh <aharonkoresh1@gmail.com>",
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/YaronKoresh/BASES.js/raw/master/LICENSE"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://YaronKoresh@github.com/YaronKoresh/BASES.js.git"
+  },
+  "dependencies": { }
+}
