@@ -1,5 +1,6 @@
 {
   "name": "BASES.js",
+  "main": "./BASES.js",
   "version": "1.0.0",
   "description": "Base encoding/decoding algorithm, with the ability for custom character sets of choice",
   "author": "Yaron Koresh <aharonkoresh1@gmail.com>",
