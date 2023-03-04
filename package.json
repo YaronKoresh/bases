@@ -1,5 +1,5 @@
 {
-  "name": "BASES.js",
+  "name": "@yaronkoresh/bases",
   "main": "./BASES.js",
   "version": "1.0.0",
   "description": "Base encoding/decoding algorithm, with the ability for custom character sets of choice",
