@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "Base encoding/decoding algorithm, with the ability for custom character sets of choice",
   "author": "Yaron Koresh <aharonkoresh1@gmail.com>",
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0"
+  },
   "license": {
     "type": "MIT",
     "url": "https://github.com/YaronKoresh/BASES.js/raw/master/LICENSE"
