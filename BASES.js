@@ -65,7 +65,7 @@ module.exports = function (...$) {
 				result += charset[parseInt(ordered[j], 2)]
 			}
 			if (size != null) {
-				result += paddingChar.repeat((size - result.length) % size)
+				result += paddingChar.repeat((size - (result.length % size)) % size)
 			}
 			out.push(result)
 		}
@@ -112,7 +112,7 @@ module.exports = function (...$) {
 				result += charset[parseInt(ordered[j], 2)]
 			}
 			if (size != null) {
-				result += paddingChar.repeat((size - result.length) % size)
+				result += paddingChar.repeat((size - (result.length % size)) % size)
 			}
 			out.push(result)
 		}
