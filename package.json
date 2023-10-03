@@ -1,19 +1,30 @@
 {
   "name": "@yaronkoresh/bases",
-  "main": "./BASES.js",
-  "version": "2.0.0",
-  "description": "Base encoding/decoding algorithm, with the ability for custom character sets of choice",
+  "type": "module",
+  "main": "./index.mjs",
+  "version": "3.0.0",
+  "description": "Base encoding/decoding algorithm, with the ability for custom character sets of choice.",
   "author": "Yaron Koresh <aharonkoresh1@gmail.com>",
   "scripts": {
     "test": "echo \"No test specified\" && exit 0"
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/YaronKoresh/BASES.js/raw/master/LICENSE"
+    "url": "https://github.com/YaronKoresh/secure-caesar/raw/master/LICENSE"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/YaronKoresh/BASES.js.git"
+    "url": "https://github.com/YaronKoresh/secure-caesar.git"
   },
-  "dependencies": { }
+ "keywords": [
+    "encode",
+    "decode",
+    "base",
+    "custom",
+    "data",
+    "charset",
+    "hex"
+  ],
+  "dependencies": {
+  }
 }
