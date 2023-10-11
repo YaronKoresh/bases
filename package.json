@@ -2,7 +2,7 @@
   "name": "@yaronkoresh/bases",
   "type": "module",
   "main": "./index.mjs",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "Base encoding/decoding algorithm, with the ability for custom character sets of choice.",
   "author": "Yaron Koresh <aharonkoresh1@gmail.com>",
   "scripts": {
@@ -21,7 +21,7 @@
     "decode",
     "data",
     "charset",
-    "basex"
+    "bases"
   ],
   "dependencies": {
     "@yaronkoresh/math": "^2.0.0"
