@@ -6,7 +6,7 @@
   "description": "Base encoding/decoding algorithm, with the ability for custom character sets of choice.",
   "author": "Yaron Koresh <aharonkoresh1@gmail.com>",
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "node test.mjs"
   },
   "license": {
     "type": "MIT",
@@ -19,12 +19,11 @@
  "keywords": [
     "encode",
     "decode",
-    "base",
-    "custom",
     "data",
     "charset",
-    "hex"
+    "basex"
   ],
   "dependencies": {
+    "@yaronkoresh/math": "^2.0.0"
   }
 }

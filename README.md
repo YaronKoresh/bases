@@ -1,11 +1,11 @@
 
-# @yaronkoresh/bases v4.0.0
-
-### Made with much screen time & care for the community, by: Yaron Koresh, Israel.
-
-### This project is licensed under MIT open-source license.
+# @yaronkoresh/bases v5.0.0
 
 ### Base encoding/decoding algorithm, with the ability for custom character sets of choice.
+
+- - -
+
+### Any base (even bases with custom length & String conversion) for any kind of encoding/decoding are now supported (v5.0.0 and above).
 
 * Converts bases with your custom not standard bases.
 
@@ -13,9 +13,7 @@
 
 * Converts between bases, using safe math operations (so... no errors with high numbers).
 
-* Choose a custom padding char (do not choose a digit OR a character included inside the charset).
-
-### Some bases, are still unsupported, for String type encoding / decoding (Number conversion is fully supported).
+* Choose a custom padding char (do not choose a character included inside the target charset).
 
 # Example
 
@@ -42,13 +40,14 @@ import { Bases } from "@yaronkoresh/bases"; // or: const { Bases } = await impor
 
 // ------------------------------------
 
-const stringToBase64 = Bases(
-	"My name is Yaron Koresh, but everyone here calls me Yaroni Makaroni.",
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
-	1
+const stringToBase62 = Bases(
+	"Yaroni Makaroni",
+	"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+	1,
+	""
 );
-console.log( stringToBase64 );
-// The results: 'TXkgbmFtZSBpcyBZYXJvbiBLb3Jlc2gsIGJ1dCBldmVyeW9uZSBoZXJlIGNhbGxzIG1lIFlhcm9uaSBNYWthcm9uaS4='
+console.log( stringToBase62 );
+// The results: 'eqW933SeYTNa1dnrLnFx'
 
 // ------------------------------------
 
@@ -59,7 +58,7 @@ const hexToDecimal = Bases(
 	""
 );
 console.log( hexToDecimal );
-// The results: 255
+// The results: "255"
 
 // ------------------------------------
 
