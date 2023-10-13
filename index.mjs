@@ -41,7 +41,7 @@ var CharsetToNumbers = function(str, charset = null) {
     if (typeof str.codePointAt(i) === "undefined") {
       ret = ret.reverse();
       while (true) {
-        if (ret.length > 0 && ret[0] === charset.split("")[0]) {
+        if (ret.length > 1 && ret[0] === charset.split("")[0]) {
           ret = ret.slice(1);
         } else {
           return ret;
