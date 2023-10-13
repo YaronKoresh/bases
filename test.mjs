@@ -1,4 +1,4 @@
-﻿import { Bases } from "./index.mjs";
+﻿import { Bases } from "./index.mjs"; // or: const { Bases } = await import("./index.mjs");
 
 const stringToBase62 = Bases(
 	"Yaroni Makaroni",

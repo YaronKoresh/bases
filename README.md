@@ -1,5 +1,5 @@
 
-# @yaronkoresh/bases v5.0.1
+# @yaronkoresh/bases v5.0.0
 
 ### Base encoding/decoding algorithm, with the ability for custom character sets of choice.
 
