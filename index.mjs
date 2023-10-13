@@ -18,7 +18,7 @@ var Split = function(inp, num) {
 };
 
 // ../_tools_/src/Bases.js
-import { Add as Add2, Multiply as Multiply2, Power as Power2, AddBinary, Greater as Greater2 } from "@yaronkoresh/math";
+import { Add as Add2, Multiply as Multiply2, Power as Power2, Greater as Greater2 } from "@yaronkoresh/math";
 
 // ../_tools_/src/Unicode.js
 import { Multiply, Power, Add, Greater } from "@yaronkoresh/math";
@@ -171,14 +171,15 @@ var Bases = function(str, charset, mode, padding = "=") {
     let bin = bin2 + "0".repeat((toBits - bin2.length % toBits) % toBits);
     let values = CharsetToNumbers(bin, "01");
     out = NumbersToCharset(values, to);
+    out = Zeros(out, RoundUp(out.length, toSize));
   } else if (from !== null && to === null && fromFloat === true) {
     out = BytesToString(Split(NumbersToCharset(CharsetToNumbers(str, from), "0123456789ABCDEF"), 2).map((hx) => CharsetToNumbers(hx, "0123456789ABCDEF")));
   } else if (from !== null && to === null) {
     let charsLength = Split(str, fromSize).length;
     let values = CharsetToNumbers(str, from);
     let bin = NumbersToCharset(values, "01");
-    let bin2 = Split(bin, fromBits).map((v) => Zeros(v, fromBits)).join("").slice(0, charsLength * 8);
-    let bytes = Split(bin, 8).map((b) => parseInt(b, 2));
+    bin = Zeros(bin, RoundUp(bin.length, 8));
+    let bytes = Split(bin.slice(0, charsLength * 8), 8).map((b) => parseInt(b, 2));
     out = BytesToString(bytes);
   }
   if (toSize !== null) {
