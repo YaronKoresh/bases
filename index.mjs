@@ -1,8 +1,12 @@
 // ../_tools_/src/Zeros.js
-var Zeros = function(str, len) {
+var Zeros = function(str, len, side = "left") {
   str = str.toString();
   while (str.length < len) {
-    str = "0" + str;
+    if (side.toLowerCase() === "left") {
+      str = "0" + str;
+    } else if (side.toLowerCase() === "right") {
+      str = str + "0";
+    }
   }
   return str;
 };
@@ -21,7 +25,7 @@ var Split = function(inp, num) {
 import { Add as Add2, Multiply as Multiply2, Power as Power2, Greater as Greater2 } from "@yaronkoresh/math";
 
 // ../_tools_/src/Unicode.js
-import { Multiply, Power, Add, Greater } from "@yaronkoresh/math";
+import { Multiply, Power, Subtract, Add, Greater, Divide, AddBinary } from "@yaronkoresh/math";
 
 // ../_tools_/src/Round.js
 var RoundUp = function(input, factor) {
@@ -34,73 +38,95 @@ var MeasureBits = function(num, roundUp = true) {
 };
 
 // ../_tools_/src/Unicode.js
-var CharsetToNumbers = function(str, charset = null) {
+var maxUnicode = 65536;
+var ToDecimal = function(str, charset = null) {
+  str = str.toString();
   let ret = [];
-  str = str.split("").reverse().join("");
-  for (let i = 0; true; i++) {
-    if (typeof str.codePointAt(i) === "undefined") {
-      ret = ret.reverse();
-      while (true) {
-        if (ret.length > 1 && ret[0] === charset.split("")[0]) {
-          ret = ret.slice(1);
-        } else {
-          return ret;
+  if (charset === null) {
+    for (let i = 0; true; i++) {
+      if (typeof str.codePointAt(i) === "undefined") {
+        ret = ret.reverse();
+        while (true) {
+          if (ret.length > 1 && ret[0] === "0") {
+            ret = ret.slice(1);
+          } else {
+            return ret.join("");
+          }
         }
       }
+      let char = str.split("")[i];
+      let bin = str.codePointAt(i).toString(2);
+      ret.push(Zeros(bin, Math.log2(maxUnicode)));
     }
-    ret.push(
-      charset === null ? str.codePointAt(i).toString() : Multiply(Power(charset.length, i), charset.indexOf(str.split("")[i]))
-    );
   }
+  for (let i = str.length - 1; i >= 0; i--) {
+    let char = str.slice(0, 1);
+    str = str.slice(1);
+    let bin = Multiply(Power(charset.length, i), charset.indexOf(char));
+    ret.push(bin);
+  }
+  return Add(ret, 0);
 };
-var NumbersToCharset = function(nums, charset = null) {
-  nums = [nums].flat();
+var FromBinary = function(bin, charset = null) {
   if (charset === null) {
-    return String.fromCodePoint(...nums.map((value2) => parseInt(value2))).toString();
+    let bins2 = Split(bin, Math.log2(maxUnicode));
+    let decimals = bins2.map((b) => parseInt(b, 2));
+    return String.fromCodePoint([...decimals].reverse()).toString();
   }
-  let bits = MeasureBits(charset.length);
-  let size = RoundUp(bits, 8) / bits;
-  charset = charset.split("");
-  let bs = charset.length;
-  const UpdateOutputValue = function(outputCharsetIndexes2) {
-    let sum = "0";
-    for (let i2 = 0; i2 < outputCharsetIndexes2.length; i2++) {
-      sum = Add(sum, Multiply(Power(bs, i2), outputCharsetIndexes2[i2]));
+  while (bin.slice(0, 1) === "0" && bin.length > 1) {
+    bin = bin.slice(1);
+  }
+  let decimal = "0";
+  let bins = [...bin.split("")].reverse();
+  for (let i = 0; i < bin.length; i++) {
+    if (bins[i] === "1") {
+      let pow = Power(2, i);
+      decimal = Add(decimal, pow);
     }
-    return sum;
-  };
-  let value = Add(nums).toString();
-  let outputCharsetIndexes = ["0"];
-  let outputIndexOutOfUsage = 1;
-  let power = Power(bs, outputIndexOutOfUsage);
-  let outputValue = "0";
-  while (Greater(power, value) !== power) {
-    outputCharsetIndexes.push("0");
-    outputIndexOutOfUsage++;
-    power = Power(bs, outputIndexOutOfUsage);
   }
-  let currentOutputIndex = outputIndexOutOfUsage - 1;
-  while (currentOutputIndex >= 0) {
-    let indexValue = Power(bs, currentOutputIndex);
-    outputValue = UpdateOutputValue(outputCharsetIndexes);
-    let _outputValue = Add(indexValue, outputValue);
-    while (Greater(_outputValue, value) !== _outputValue) {
-      outputCharsetIndexes[currentOutputIndex] = Add(outputCharsetIndexes[currentOutputIndex], 1);
-      outputValue = _outputValue;
-      _outputValue = Add(indexValue, outputValue);
-    }
-    currentOutputIndex--;
+  return FromDecimal(decimal, charset);
+};
+var FromDecimal = function(decimal, charset = null) {
+  if (charset === null) {
+    let bin = FromDecimal(decimal, "01");
+    let bins = Split(bin, Math.log2(maxUnicode));
+    let decimals = bins.map((b) => parseInt(b, 2));
+    return String.fromCodePoint([...decimals].reverse()).toString();
   }
-  let ret = outputCharsetIndexes.map(function(charsetIndex) {
-    return charset[+charsetIndex];
-  }).reverse().join("");
+  decimal = Add(decimal, 1);
+  let encoded = "";
+  let base = charset.length;
+  let cs = charset.split("");
+  let index = "0";
   while (true) {
-    if (ret.length > 1 && ret.slice(0, 1) === charset[0]) {
-      ret = ret.slice(1);
+    let nextStep = Power(base, index);
+    if (Greater(decimal, nextStep) !== decimal) {
+      index = Subtract(index, 1);
+      break;
     } else {
-      return ret;
+      index = Add(index, 1);
     }
   }
+  for (let i = index; Greater(i, "0") !== "0"; i = Subtract(i, 1)) {
+    let csIndex = "1";
+    let pow = Power(base, i);
+    if (Greater(pow, decimal) === pow) {
+      if (encoded !== "") {
+        encoded += cs[0];
+      }
+      continue;
+    }
+    let _pow = pow;
+    let nextStep = Add(pow, _pow);
+    while (Greater(decimal, nextStep) === decimal) {
+      pow = nextStep;
+      csIndex = Add(csIndex, 1);
+      nextStep = Add(pow, _pow);
+    }
+    decimal = Subtract(decimal, pow);
+    encoded += cs[csIndex];
+  }
+  return encoded;
 };
 var StringToBytes = function(str) {
   let e = new TextEncoder();
@@ -158,26 +184,33 @@ var Bases = function(str, charset, mode, padding = "=") {
     str = str.replaceAll(re, "");
   }
   if (from !== null && to !== null) {
-    CharsetToNumbers(str, from).reverse().map(function(value) {
-      num = Add2(num, value);
-    });
-    out = NumbersToCharset(num, to);
+    if (from === "0123456789") {
+      out = FromDecimal(str, to);
+    } else {
+      out = ToDecimal(str, from);
+    }
   } else if (from === null && to !== null && toFloat === true) {
-    let hex = StringToBytes(str).map((byte) => NumbersToCharset(byte, "0123456789ABCDEF")).map((hx) => Zeros(hx, 2)).join("");
-    out = NumbersToCharset(CharsetToNumbers(hex, "0123456789ABCDEF"), to);
+    let bytes = StringToBytes(str);
+    let hex = bytes.map((byte) => byte.toString(16)).join("");
+    let deci = ToDecimal(hex.toUpperCase(), "0123456789ABCDEF");
+    out = FromDecimal(deci, to);
   } else if (from === null && to !== null) {
     let bytes = StringToBytes(str);
     let bin2 = bytes.map((byte) => Zeros((+byte).toString(2), 8)).join("");
     let bin = bin2 + "0".repeat((toBits - bin2.length % toBits) % toBits);
-    let values = CharsetToNumbers(bin, "01");
-    out = NumbersToCharset(values, to);
-    out = Zeros(out, RoundUp(out.length, toSize));
+    out = FromBinary(bin, to);
   } else if (from !== null && to === null && fromFloat === true) {
-    out = BytesToString(Split(NumbersToCharset(CharsetToNumbers(str, from), "0123456789ABCDEF"), 2).map((hx) => CharsetToNumbers(hx, "0123456789ABCDEF")));
+    out = BytesToString(
+      Split(
+        FromDecimal(ToDecimal(str, from), "0123456789ABCDEF"),
+        2
+      ).map(
+        (hx) => ToDecimal(hx, "0123456789ABCDEF")
+      )
+    );
   } else if (from !== null && to === null) {
     let charsLength = Split(str, fromSize).length;
-    let values = CharsetToNumbers(str, from);
-    let bin = NumbersToCharset(values, "01");
+    let bin = ToBinary(str, from);
     bin = Zeros(bin, RoundUp(bin.length, 8));
     let bytes = Split(bin.slice(0, charsLength * 8), 8).map((b) => parseInt(b, 2));
     out = BytesToString(bytes);
